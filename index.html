@@ -390,8 +390,11 @@
       </p>
 
       <!-- Email Signup -->
-      <form class="signup-form" id="signupForm">
-        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+      <form class="signup-form" id="signupForm" action="https://formsubmit.co/hello@pikny.store" method="POST">
+        <input type="hidden" name="_subject" value="New Pikny signup!">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="">
+        <input type="email" name="email" placeholder="Enter your email" required aria-label="Email address">
         <button type="submit">Notify Me</button>
       </form>
       <div class="signup-success" id="successMsg">
@@ -429,8 +432,19 @@
   <script>
     document.getElementById('signupForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      this.style.display = 'none';
-      document.getElementById('successMsg').classList.add('show');
+      var form = this;
+      var data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function() {
+        form.style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+      }).catch(function() {
+        form.style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+      });
     });
   </script>
 
